@@ -17,6 +17,8 @@
 	"ignorePatterns": ["*.css"],
 	"rules": {
 		"@typescript-eslint/explicit-function-return-type": "off",
+		"@typescript-eslint/consistent-type-definitions": "off",
+		"@typescript-eslint/consistent-type-imports": "off",
 		"react/react-in-jsx-scope": "off"
 	}
 }
