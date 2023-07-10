@@ -2,6 +2,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import Header from "../layout/Header";
 import Footer from "../layout/Footer";
+import RecoilRootWrapper from "../providers/RecoilRootWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,9 +19,11 @@ export default function RootLayout({
   return (
     <html>
       <body>
-        <Header />
-        <div className={"max-w-[1024px] m-auto min-h-[70vh]"}>{children}</div>
-        <Footer />
+        <RecoilRootWrapper>
+          <Header />
+          <div className={"max-w-[1024px] m-auto min-h-[70vh]"}>{children}</div>
+          <Footer />
+        </RecoilRootWrapper>
       </body>
     </html>
   );
