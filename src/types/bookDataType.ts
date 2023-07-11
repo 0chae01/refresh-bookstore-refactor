@@ -9,5 +9,4 @@ export type bookDataType = {
   price: number;
   image_path: string;
   category: string;
-  amount: number;
 };

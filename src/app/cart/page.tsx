@@ -1,7 +1,6 @@
 "use client";
 
-import { bookDataType } from "../../types/bookDataType";
-
+import { cartStateType } from "../../types/cartStateType";
 import { useEffect, useState } from "react";
 import BookItem from "../../components/Cart/BookItem";
 const Cart = () => {
@@ -61,7 +60,7 @@ const Cart = () => {
           value="선택삭제"
         />
       </div>
-      {data.map((book: bookDataType) => (
+      {data.map((book: cartStateType) => (
         <BookItem
           key={book.isbn}
           image_path={book.image_path}
