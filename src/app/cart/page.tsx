@@ -1,12 +1,13 @@
 "use client";
 
 import { cartStateType } from "../../types/cartStateType";
-import BookItem from "../../components/Cart/BookItem";
-import { useRecoilValue } from "recoil";
+import CartItem from "../../components/Cart/CartItem";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { cartStore } from "../../stores";
-import { useEffect, useState } from "react";
+import { createRef, SyntheticEvent, useEffect, useRef, useState } from "react";
+import { checkedCartState } from "../../stores/cart";
 
-// 임시 장바구니 데이터 저장
+// 임시 장바구니 데이터 저장 (book-detail에서 cartState 저장 구현 예정)
 localStorage.setItem(
   "cart",
   JSON.stringify([
@@ -43,20 +44,82 @@ localStorage.setItem(
 
 const Cart = () => {
   const cart = useRecoilValue(cartStore.cartState);
-  const [mounted, setMounted] = useState(false);
+
+  // const [mounted, setMounted] = useState(false);
+  // useEffect(() => {
+  //   setMounted(true);
+  // }, []);
+
+  const [checkedCartData, setCheckedCartData] =
+    useRecoilState(checkedCartState);
+  const formRef = useRef<HTMLFormElement>(null);
+  const checkboxRefs = cart.map(() => createRef<HTMLInputElement>());
+  const [formData, setFormData] = useState<FormData>();
+
+  const setAllCheckedFromItems = () => {
+    if (!formRef.current) return;
+    const data = new FormData(formRef.current);
+    const selectedCount = data.getAll("select-item").length;
+    const allChecked = selectedCount === cart.length;
+    formRef.current.querySelector<HTMLInputElement>(".select-all")!.checked =
+      allChecked;
+  };
+
+  const setItemsCheckedFromAll = (targetInput: HTMLInputElement) => {
+    const allChecked = targetInput.checked;
+    checkboxRefs
+      .filter((inputElem) => {
+        return !inputElem.current!.disabled;
+      })
+      .forEach((inputElem) => {
+        inputElem.current!.checked = allChecked;
+      });
+  };
+
+  const handleCheckboxChanged = (e?: SyntheticEvent) => {
+    if (!formRef.current) return;
+    const targetInput = e?.target as HTMLInputElement;
+    if (targetInput && targetInput.classList.contains("select-all")) {
+      setItemsCheckedFromAll(targetInput);
+    } else {
+      setAllCheckedFromItems();
+    }
+    const data = new FormData(formRef.current);
+    setFormData(data);
+  };
+
+  // useEffect(() => {
+  //   checkedCartData.forEach((item) => {
+  //     const itemRef = checkboxRefs.find(
+  //       (ref) => ref.current!.dataset.id === item.id
+  //     );
+  //     if (itemRef) itemRef.current!.checked = true;
+  //   });
+  //   setAllCheckedFromItems();
+  // }, []);
+
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    const checkedItems = checkboxRefs.reduce<cartStateType[]>((res, ref, i) => {
+      if (ref.current?.checked) res.push(cart[i]);
+      return res;
+    }, []);
+    setCheckedCartData(checkedItems);
+  }, [cart, formData]);
 
   return (
     <>
       <h1 className="text-large my-1">장바구니</h1>
       <hr className="text-light_gray" />
-      {cart && mounted ? (
-        <>
+      {cart ? (
+        <form ref={formRef} onChange={handleCheckboxChanged}>
           <section className="my-2 flex justify-between">
             <label>
-              <input type="checkbox" name="selectAll" className="mx-1" />
+              <input
+                type="checkbox"
+                className="select-all mx-2"
+                name="select-all"
+                defaultChecked
+              />
               전체선택
             </label>
             <input
@@ -65,18 +128,23 @@ const Cart = () => {
               value="선택삭제"
             />
           </section>
-          {cart.map((book: cartStateType) => (
-            <BookItem
+          {cart.map((book: cartStateType, i) => (
+            <div
               key={book.isbn}
-              isbn={book.isbn}
-              image_path={book.image_path}
-              title={book.title}
-              author={book.author}
-              price={book.price}
-              amount={book.amount}
-            />
+              className="border-[1px] border-light_gray rounded-lg w-full h-[160px] my-2 px-4 py-1 flex justify-between items-center shadow-md"
+            >
+              <CartItem
+                isbn={book.isbn}
+                image_path={book.image_path}
+                title={book.title}
+                author={book.author}
+                price={book.price}
+                amount={book.amount}
+                ref={checkboxRefs[i]}
+              />
+            </div>
           ))}
-        </>
+        </form>
       ) : (
         <p>상품이 없습니다.</p>
       )}

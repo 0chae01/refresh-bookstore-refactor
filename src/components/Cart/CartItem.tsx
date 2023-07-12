@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, ForwardedRef, forwardRef, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { cartStore } from "../../stores";
 import { cartStateType } from "../../types/cartStateType";
@@ -12,14 +12,10 @@ type BookItemProps = {
   amount: number;
 };
 
-const BookItem = ({
-  isbn,
-  image_path,
-  title,
-  author,
-  price,
-  amount,
-}: BookItemProps) => {
+const CartItem = (
+  { isbn, image_path, title, author, price, amount }: BookItemProps,
+  ref: ForwardedRef<HTMLInputElement>
+) => {
   const [cart, setCart] = useRecoilState(cartStore.cartState);
   const index = cart.findIndex((item: cartStateType) => item.isbn === isbn);
 
@@ -29,10 +25,6 @@ const BookItem = ({
     newValue: cartStateType
   ) => {
     return [...arr.slice(0, index), newValue, ...arr.slice(index + 1)];
-  };
-
-  const deleteItemAtIndex = (arr: cartStateType[], index: number) => {
-    return [...arr.slice(0, index), ...arr.slice(index + 1)];
   };
 
   const setAmount = (amount: number) => {
@@ -48,6 +40,10 @@ const BookItem = ({
     setAmount(Number(e.target.value));
   };
 
+  const deleteItemAtIndex = (arr: cartStateType[], index: number) => {
+    return [...arr.slice(0, index), ...arr.slice(index + 1)];
+  };
+
   const deleteItem = () => {
     const newCart = deleteItemAtIndex(cart, index);
     setCart(newCart);
@@ -55,8 +51,14 @@ const BookItem = ({
   };
 
   return (
-    <div className="border-[1px] border-light_gray rounded-lg w-full h-[160px] my-2 px-4 py-1 flex justify-between items-center shadow-md">
-      <input type="checkbox" />
+    <>
+      <input
+        className="cart-item__checkbox "
+        type="checkbox"
+        name="select-item"
+        ref={ref}
+        defaultChecked
+      />
       <div className="w-[100px] h-[130px] p-1 flex items-center border-[1px] border-light_gray">
         <img src={image_path} alt={title} />
       </div>
@@ -78,8 +80,8 @@ const BookItem = ({
         <p className="text-medium">{(price * amount).toLocaleString()}원</p>
       </div>
       <input type="button" value="삭제" onClick={deleteItem} />
-    </div>
+    </>
   );
 };
 
-export default BookItem;
+export default forwardRef(CartItem);

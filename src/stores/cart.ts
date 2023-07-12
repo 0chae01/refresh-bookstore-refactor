@@ -8,3 +8,8 @@ export const cartState = atom<cartStateType[]>({
       ? JSON.parse(localStorage.getItem("cart") ?? "[]")
       : [],
 });
+
+export const checkedCartState = atom<cartStateType[]>({
+  key: "checkedCartState",
+  default: [],
+});
