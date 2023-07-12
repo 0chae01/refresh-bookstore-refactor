@@ -43,12 +43,8 @@ localStorage.setItem(
 );
 
 const Cart = () => {
-  const cart = useRecoilValue(cartStore.cartState);
-
-  // const [mounted, setMounted] = useState(false);
-  // useEffect(() => {
-  //   setMounted(true);
-  // }, []);
+  const [cart, setCart] = useRecoilState(cartStore.cartState);
+  const [checkedItemPrice, setCheckedItemPrice] = useState(0);
 
   const [checkedCartData, setCheckedCartData] =
     useRecoilState(checkedCartState);
@@ -88,67 +84,124 @@ const Cart = () => {
     setFormData(data);
   };
 
-  // useEffect(() => {
-  //   checkedCartData.forEach((item) => {
-  //     const itemRef = checkboxRefs.find(
-  //       (ref) => ref.current!.dataset.id === item.id
-  //     );
-  //     if (itemRef) itemRef.current!.checked = true;
-  //   });
-  //   setAllCheckedFromItems();
-  // }, []);
+  const deleteCheckedItem = () => {
+    const unCheckedItems: cartStateType[] = checkboxRefs.reduce<
+      cartStateType[]
+    >((res, ref, i) => {
+      if (!ref.current?.checked) res.push(cart[i]);
+      return res;
+    }, []);
+    setCart(unCheckedItems);
+    localStorage.setItem("cart", JSON.stringify(unCheckedItems));
+  };
+
+  useEffect(() => {
+    checkedCartData.forEach((item) => {
+      const itemRef = checkboxRefs.find(
+        (ref) => ref.current!.dataset.id === item.id
+      );
+      if (itemRef) itemRef.current!.checked = true;
+    });
+    setAllCheckedFromItems();
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, []);
 
   useEffect(() => {
     const checkedItems = checkboxRefs.reduce<cartStateType[]>((res, ref, i) => {
       if (ref.current?.checked) res.push(cart[i]);
       return res;
     }, []);
-    setCheckedCartData(checkedItems);
+
+    const checkedPriceArr = checkedItems.map(
+      (item) => item.amount * item.price
+    );
+    const checkedPrice = checkedPriceArr.reduce((a, b) => a + b, 0);
+    setCheckedItemPrice(checkedPrice);
   }, [cart, formData]);
 
   return (
-    <>
+    <div className="m-4">
       <h1 className="text-large my-1">장바구니</h1>
       <hr className="text-light_gray" />
       {cart ? (
-        <form ref={formRef} onChange={handleCheckboxChanged}>
-          <section className="my-2 flex justify-between">
-            <label>
+        <>
+          <form ref={formRef} onChange={handleCheckboxChanged}>
+            <section className="my-3 flex justify-between">
+              <label className="flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="select-all mx-2 cursor-pointer w-[16px] h-[16px]"
+                  name="select-all"
+                  defaultChecked
+                />
+                전체선택
+              </label>
               <input
-                type="checkbox"
-                className="select-all mx-2"
-                name="select-all"
-                defaultChecked
+                type="button"
+                className="border-[1px] border-gray bg-white text-dark_gray font-medium rounded px-1 cursor-pointer duration-500 hover:bg-light_gray"
+                value="선택 삭제 𐌢"
+                onClick={deleteCheckedItem}
               />
-              전체선택
-            </label>
-            <input
-              type="button"
-              className="border-[1px] rounded px-1 cursor-pointer"
-              value="선택삭제"
-            />
-          </section>
-          {cart.map((book: cartStateType, i) => (
-            <div
-              key={book.isbn}
-              className="border-[1px] border-light_gray rounded-lg w-full h-[160px] my-2 px-4 py-1 flex justify-between items-center shadow-md"
-            >
-              <CartItem
-                isbn={book.isbn}
-                image_path={book.image_path}
-                title={book.title}
-                author={book.author}
-                price={book.price}
-                amount={book.amount}
-                ref={checkboxRefs[i]}
-              />
+            </section>
+            {cart.map((book: cartStateType, i) => (
+              <div
+                key={book.isbn}
+                className="border-[1px] border-light_gray rounded-lg w-full h-[160px] my-3 px-4 py-1 flex justify-between items-center shadow-md"
+              >
+                <CartItem
+                  isbn={book.isbn}
+                  image_path={book.image_path}
+                  title={book.title}
+                  author={book.author}
+                  price={book.price}
+                  amount={book.amount}
+                  ref={checkboxRefs[i]}
+                />
+              </div>
+            ))}
+          </form>
+          <hr className="text-light_gray" />
+          <section className="cartInfo flex justify-between">
+            <p className="text-dark_gray m-2">
+              * 기본배송비 3,000원 | 50,000원 이상 구매시 무료 배송
+            </p>
+            <div className="priceInfo w-[30%] text-medium font-normal m-2">
+              <div className="flex justify-between mb-2">
+                <p>선택 상품 금액</p>
+                <p>{checkedItemPrice.toLocaleString()}원</p>
+              </div>
+              <div className="flex justify-between mb-2">
+                <p>배송비</p>
+                <p>
+                  {checkedItemPrice > 50000 || checkedItemPrice === 0
+                    ? 0
+                    : "3,000"}
+                  원
+                </p>
+              </div>
+              <div className="flex justify-between mb-2">
+                <p>선택 상품 금액</p>
+                <p>
+                  {checkedItemPrice > 50000 || checkedItemPrice === 0
+                    ? checkedItemPrice.toLocaleString()
+                    : (checkedItemPrice + 3000).toLocaleString()}
+                  원
+                </p>
+              </div>
+              <button
+                onClick={() => console.log("purchase!")}
+                disabled={checkedItemPrice ? false : true}
+                className="rounded text-white bg-point w-[100%] h-[45px] disabled:bg-gray"
+              >
+                구매하기
+              </button>
             </div>
-          ))}
-        </form>
+          </section>
+        </>
       ) : (
         <p>상품이 없습니다.</p>
       )}
-    </>
+    </div>
   );
 };
 

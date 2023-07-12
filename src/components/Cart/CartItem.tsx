@@ -53,23 +53,24 @@ const CartItem = (
   return (
     <>
       <input
-        className="cart-item__checkbox "
+        className="cart-item__checkbox cursor-pointer w-[16px] h-[16px]"
         type="checkbox"
         name="select-item"
         ref={ref}
         defaultChecked
       />
-      <div className="w-[100px] h-[130px] p-1 flex items-center border-[1px] border-light_gray">
+      <div className="w-[10%] h-auto p-1 mx-2 flex items-center border-[1px] border-light_gray">
         <img src={image_path} alt={title} />
       </div>
       <div className="flex flex-col justify-center w-1/2">
         <h1 className="text-medium font-normal">{title}</h1>
         <div className="text-regular text-dark_gray">{author}</div>
       </div>
-      <div className="flex items-center">
+      <div className="flex flex-col items-center mb-1">
+        <p className="text-dark_gray text-small ">수량</p>
         <input
           type="number"
-          className="border-[1px] rounded pl-1 w-[100px]"
+          className="border-[1px] border-gray rounded pl-3 w-[80px] text-center cursor-pointer"
           min={1}
           value={amount}
           onChange={amountChangeHandler}
@@ -79,7 +80,12 @@ const CartItem = (
         <p className="text-small">상품 금액</p>
         <p className="text-medium">{(price * amount).toLocaleString()}원</p>
       </div>
-      <input type="button" value="삭제" onClick={deleteItem} />
+      <input
+        type="button"
+        value="╳"
+        onClick={deleteItem}
+        className="cursor-pointer duration-500 hover:scale-125"
+      />
     </>
   );
 };
