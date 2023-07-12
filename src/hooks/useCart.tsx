@@ -34,9 +34,9 @@ export default function useCart() {
     );
   };
 
-  const deleteAmount = (isbn: string) => {
+  const deleteItem = (isbn: string) => {
     setCart(cart.filter((item: cartStateType) => item.isbn !== isbn));
   };
 
-  return { cart, increaseAmount, decreaseAmount, setAmount, deleteAmount };
+  return { cart, increaseAmount, decreaseAmount, setAmount, deleteItem };
 }

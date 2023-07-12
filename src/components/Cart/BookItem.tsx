@@ -3,7 +3,7 @@ import { useRecoilState } from "recoil";
 import { cartStore } from "../../states";
 import { cartStateType } from "../../types/cartStateType";
 
-type bookItemType = {
+type BookItemProps = {
   isbn: string;
   image_path: string;
   title: string;
@@ -19,9 +19,21 @@ const BookItem = ({
   author,
   price,
   amount,
-}: bookItemType) => {
+}: BookItemProps) => {
   const [cart, setCart] = useRecoilState(cartStore.cartState);
   const index = cart.findIndex((item: cartStateType) => item.isbn === isbn);
+
+  const replaceItemAtIndex = (
+    arr: cartStateType[],
+    index: number,
+    newValue: cartStateType
+  ) => {
+    return [...arr.slice(0, index), newValue, ...arr.slice(index + 1)];
+  };
+
+  const deleteItemAtIndex = (arr: cartStateType[], index: number) => {
+    return [...arr.slice(0, index), ...arr.slice(index + 1)];
+  };
 
   const setAmount = (amount: number) => {
     const newCart = replaceItemAtIndex(cart, index, {
@@ -29,11 +41,17 @@ const BookItem = ({
       amount: amount,
     });
     setCart(newCart);
-    console.log(cart);
+    localStorage.setItem("cart", JSON.stringify(newCart));
   };
 
   const amountChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setAmount(Number(e.target.value));
+  };
+
+  const deleteItem = () => {
+    const newCart = deleteItemAtIndex(cart, index);
+    setCart(newCart);
+    localStorage.setItem("cart", JSON.stringify(newCart));
   };
 
   return (
@@ -57,19 +75,11 @@ const BookItem = ({
       </div>
       <div className="w-[150px] flex flex-col justify-center items-center">
         <p className="text-small">상품 금액</p>
-        <p className="text-medium">{price}원</p>
+        <p className="text-medium">{(price * amount).toLocaleString()}원</p>
       </div>
-      <input type="button" value="삭제" />
+      <input type="button" value="삭제" onClick={deleteItem} />
     </div>
   );
 };
 
 export default BookItem;
-
-function replaceItemAtIndex(
-  arr: cartStateType[],
-  index: number,
-  newValue: cartStateType
-) {
-  return [...arr.slice(0, index), newValue, ...arr.slice(index + 1)];
-}
