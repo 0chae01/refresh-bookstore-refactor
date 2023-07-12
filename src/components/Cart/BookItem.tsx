@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 import { useRecoilState } from "recoil";
-import { cartStore } from "../../states";
+import { cartStore } from "../../stores";
 import { cartStateType } from "../../types/cartStateType";
 
 type BookItemProps = {

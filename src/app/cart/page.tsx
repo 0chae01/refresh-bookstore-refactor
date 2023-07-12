@@ -3,7 +3,7 @@
 import { cartStateType } from "../../types/cartStateType";
 import BookItem from "../../components/Cart/BookItem";
 import { useRecoilValue } from "recoil";
-import { cartStore } from "../../states";
+import { cartStore } from "../../stores";
 import { useEffect, useState } from "react";
 
 // 임시 장바구니 데이터 저장
