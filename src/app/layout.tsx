@@ -21,7 +21,9 @@ export default function RootLayout({
       <body>
         <RecoilRootWrapper>
           <Header />
-          <div className={"max-w-[1024px] m-auto min-h-[70vh]"}>{children}</div>
+          <div className={"max-w-[1024px] h-auto m-auto min-h-[70vh]"}>
+            {children}
+          </div>
           <Footer />
         </RecoilRootWrapper>
       </body>

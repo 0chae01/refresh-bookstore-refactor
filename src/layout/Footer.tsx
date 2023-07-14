@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <div className="bg-light_green w-full h-[100px]">
+    <div className="bg-point w-full h-[200px] mt-10 bottom-0 relative">
       <div className="w-full lg:w-[1024px]">푸터입니다.</div>
     </div>
   );
