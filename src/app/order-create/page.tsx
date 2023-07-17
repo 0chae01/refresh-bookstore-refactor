@@ -6,6 +6,7 @@ import OrderCreateItem from "../../components/order-create/OrderCreateItem";
 import { cartState } from "../../stores/cart";
 import Post from "../../components/common/Post";
 import { postCodePopupStore } from "../../stores";
+import autoHyphen from "../../utils/autoHyphen";
 
 const orderCreate = () => {
   const [mounted, setMounted] = useState(false);
@@ -17,6 +18,7 @@ const orderCreate = () => {
   const [popup, setPopup] = useRecoilState(
     postCodePopupStore.postCodePopupState
   );
+  const [phone, setPhone] = useState("");
 
   useEffect(() => {
     setMounted(true);
@@ -43,10 +45,15 @@ const orderCreate = () => {
       inputRef.current!.focus();
     }
   }, [inputVisible]);
+
   if (!mounted) return null;
 
   const handlePopup = () => {
     setPopup(!popup);
+  };
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setPhone(e.target.value);
   };
   return (
     <div className="m-8">
@@ -90,7 +97,8 @@ const orderCreate = () => {
               <input
                 className="border-[1px] rounded border-light_gray w-[300px] h-[32px] px-2"
                 autoComplete="on"
-                // onInput="autoHyphen(this)"
+                value={autoHyphen(phone)}
+                onChange={onChange}
                 maxLength={13}
                 placeholder="연락처를 입력해주세요."
               />
