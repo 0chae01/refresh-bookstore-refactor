@@ -1,14 +1,24 @@
 "use client";
 
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { useRecoilValue } from "recoil";
-import OrderCreateItem from "../../components/order-create/orderCreateItem";
-
+import { useRecoilValue, useRecoilState } from "recoil";
+import OrderCreateItem from "../../components/order-create/OrderCreateItem";
 import { cartState } from "../../stores/cart";
+import DaumPostcode from "react-daum-postcode";
+import Post from "../../components/common/Post";
+import { postCodePopupStore } from "../../stores";
 
 const orderCreate = () => {
   const [mounted, setMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [address, setAddress] = useState({
+    address: "",
+    zonecode: "",
+  });
+  const [popup, setPopup] = useRecoilState(
+    postCodePopupStore.postCodePopupState
+  );
+
   useEffect(() => {
     setMounted(true);
     setIsLoading(false);
@@ -36,6 +46,9 @@ const orderCreate = () => {
   }, [inputVisible]);
   if (!mounted) return null;
 
+  const handlePopup = () => {
+    setPopup(!popup);
+  };
   return (
     <div className="m-8">
       <h1 className="text-large my-1">결제하기</h1>
@@ -67,7 +80,7 @@ const orderCreate = () => {
                 이름
               </label>
               <input
-                className="border-[1px] rounded border-light_gray w-[270px] h-[32px] px-2"
+                className="border-[1px] rounded border-light_gray w-[300px] h-[32px] px-2"
                 placeholder="이름을 입력해주세요."
               />
             </div>
@@ -76,7 +89,7 @@ const orderCreate = () => {
                 연락처
               </label>
               <input
-                className="border-[1px] rounded border-light_gray w-[270px] h-[32px] px-2"
+                className="border-[1px] rounded border-light_gray w-[300px] h-[32px] px-2"
                 autoComplete="on"
                 // onInput="autoHyphen(this)"
                 maxLength={13}
@@ -87,32 +100,34 @@ const orderCreate = () => {
               <label className="w-[110px] px-2 mx-2 flex items-center justify-center border-r-[1px] border-light_gray">
                 주소
               </label>
-              <div className="addressInput w-[270px]">
+              <div className="addressInput w-[300px]">
                 <input
                   type="text"
-                  // onClick={() => findAddress()}
-                  className="user_delivery_info border-[1px] rounded border-light_gray w-[140px] h-[32px] px-2 my-1"
+                  onClick={handlePopup}
+                  className="user_delivery_info border-[1px] rounded border-light_gray w-[156px] h-[32px] px-2 my-1"
                   id="postalCodeInput"
                   placeholder="우편번호"
+                  value={address.zonecode}
                   readOnly
                 />
                 <input
                   type="button"
-                  // onClick={() => findAddress()}
-                  className="search_address border-[1px] rounded border-light_gray w-[80px] h-[32px] px-2 m-1"
+                  onClick={handlePopup}
+                  className="search_address cursor-pointer border-[1px] rounded border-light_gray w-[140px] h-[32px] px-2 ml-1"
                   value="주소 검색"
                 />
                 <input
                   type="text"
-                  // onClick={() => findAddress()}
-                  className="user_delivery_info border-[1px] rounded border-light_gray w-[270px] h-[32px] px-2 my-1"
+                  onClick={handlePopup}
+                  className="user_delivery_info border-[1px] rounded border-light_gray w-[300px] h-[32px] px-2 my-1"
                   placeholder="주소"
+                  value={address.address}
                   readOnly
                 />
                 <input
                   type="text"
-                  className="user_delivery_info border-[1px] rounded border-light_gray w-[270px] h-[32px] px-2 my-1"
-                  placeholder="상세주소"
+                  className="user_delivery_info border-[1px] rounded border-light_gray w-[300px] h-[32px] px-2 my-1"
+                  placeholder="상세주소를 입력해주세요."
                 />
               </div>
             </div>
@@ -120,10 +135,10 @@ const orderCreate = () => {
               <p className="w-[110px] px-2 mx-2 flex items-center justify-center border-r-[1px] border-light_gray">
                 배송 요청 사항
               </p>
-              <div className="deliveryRequestSelect w-[270px]">
+              <div className="deliveryRequestSelect w-[300px]">
                 <select
                   onChange={handleInput}
-                  className="border-[1px] rounded border-light_gray w-[270px] h-[32px] px-1 my-1"
+                  className="border-[1px] rounded border-light_gray w-[300px] h-[32px] px-1 my-1"
                 >
                   <option value="0" className="ml-2">
                     배송시 요청사항을 선택해 주세요.
@@ -165,7 +180,7 @@ const orderCreate = () => {
                     type="text"
                     maxLength={50}
                     placeholder="최대 50자 입력이 가능합니다."
-                    className="border-[1px] rounded border-light_gray w-[270px] h-[32px] px-2 my-1"
+                    className="border-[1px] rounded border-light_gray w-[300px] h-[32px] px-2 my-1"
                   />
                 ) : null}
               </div>
@@ -199,6 +214,7 @@ const orderCreate = () => {
           </div>
         </section>
       </div>
+      {popup && <Post address={address} setAddress={setAddress} />}
     </div>
   );
 };

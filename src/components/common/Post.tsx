@@ -1,0 +1,49 @@
+import DaumPostcode from "react-daum-postcode";
+import { useRecoilState } from "recoil";
+import { postCodePopupStore } from "../../stores";
+
+const Post = (props: any) => {
+  const [popup, setPopup] = useRecoilState(
+    postCodePopupStore.postCodePopupState
+  );
+
+  const complete = (data: any) => {
+    let fullAddress = data.address;
+    let extraAddress = "";
+
+    if (data.addressType === "R") {
+      if (data.bname !== "") {
+        extraAddress += data.bname;
+      }
+      if (data.buildingName !== "") {
+        extraAddress +=
+          extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
+      }
+      fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
+    }
+
+    props.setAddress({
+      ...props.address,
+      address: fullAddress,
+      zonecode: data.zonecode,
+    });
+    setPopup(!popup);
+  };
+
+  return (
+    <div className="postmodal fixed bg-dark_gray bg-opacity-70 top-0 left-0 h-[100%] w-[100%] flex justify-center items-center">
+      <DaumPostcode
+        onComplete={complete}
+        className="max-w-[50%] min-w-[350px] min-h-[500px]"
+      />
+      <p
+        className="fixed top-0 right-0 m-4 text-large cursor-pointer text-white"
+        onClick={() => setPopup(!popup)}
+      >
+        ╳
+      </p>
+    </div>
+  );
+};
+
+export default Post;
