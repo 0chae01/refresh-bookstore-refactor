@@ -3,7 +3,7 @@ import { useRecoilState } from "recoil";
 import { cartStore } from "../../stores";
 import { cartStateType } from "../../types/cartStateType";
 
-type BookItemProps = {
+type cartItemProps = {
   isbn: string;
   image_path: string;
   title: string;
@@ -13,7 +13,7 @@ type BookItemProps = {
 };
 
 const CartItem = (
-  { isbn, image_path, title, author, price, amount }: BookItemProps,
+  { isbn, image_path, title, author, price, amount }: cartItemProps,
   ref: ForwardedRef<HTMLInputElement>
 ) => {
   const [cart, setCart] = useRecoilState(cartStore.cartState);
