@@ -4,7 +4,7 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
 import OrderCreateItem from "../../components/order-create/OrderCreateItem";
 import { cartState } from "../../stores/cart";
-import Post from "../../components/common/Post";
+import Post from "../../components/Common/Post";
 import { postCodePopupStore } from "../../stores";
 import autoHyphen from "../../utils/autoHyphen";
 

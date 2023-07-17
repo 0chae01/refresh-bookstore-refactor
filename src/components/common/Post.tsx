@@ -39,7 +39,7 @@ const Post = (props: {
   };
 
   return (
-    <div className="postmodal fixed bg-dark_gray bg-opacity-70 top-0 left-0 h-[100%] w-[100%] flex justify-center items-center">
+    <div className="z-[999999999] postmodal fixed bg-dark_gray bg-opacity-70 top-0 left-0 h-[100%] w-[100%] flex justify-center items-center">
       <DaumPostcode
         onComplete={complete}
         className="max-w-[50%] min-w-[350px] min-h-[500px]"
