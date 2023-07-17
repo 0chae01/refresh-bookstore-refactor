@@ -1,8 +1,16 @@
+import { Dispatch, SetStateAction } from "react";
 import DaumPostcode from "react-daum-postcode";
 import { useRecoilState } from "recoil";
 import { postCodePopupStore } from "../../stores";
 
-const Post = (props: any) => {
+type addressType = {
+  address: string;
+  zonecode: string;
+};
+const Post = (props: {
+  address: addressType;
+  setAddress: Dispatch<SetStateAction<addressType>>;
+}) => {
   const [popup, setPopup] = useRecoilState(
     postCodePopupStore.postCodePopupState
   );

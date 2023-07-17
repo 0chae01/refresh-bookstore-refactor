@@ -4,7 +4,6 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
 import OrderCreateItem from "../../components/order-create/OrderCreateItem";
 import { cartState } from "../../stores/cart";
-import DaumPostcode from "react-daum-postcode";
 import Post from "../../components/common/Post";
 import { postCodePopupStore } from "../../stores";
 
