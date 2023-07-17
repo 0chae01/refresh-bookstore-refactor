@@ -1,7 +1,7 @@
 "use client";
 
 import { cartStateType } from "../../types/cartStateType";
-import CartItem from "../../components/Cart/CartItem";
+import CartItem from "../../components/cart/CartItem";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { cartStore } from "../../stores";
 import { createRef, SyntheticEvent, useEffect, useRef, useState } from "react";
@@ -120,7 +120,7 @@ const Cart = () => {
   }, [cart, formData]);
 
   return (
-    <div className="m-4">
+    <div className="m-8">
       <h1 className="text-large my-1">장바구니</h1>
       <hr className="text-light_gray" />
       {cart ? (
