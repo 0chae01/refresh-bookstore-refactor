@@ -11,14 +11,14 @@ const MyPageLayout = ({ children }: { children: React.ReactNode }) => {
       <h1 className="text-large my-1">마이페이지</h1>
       <hr className="text-light_gray" />
       <div className="flex">
-        <section className="menu flex flex-col">
+        <section className="menu flex flex-col w-[150px]">
           <Link
             className={`text-medium text-center p-2 m-2 ${
               path === "order-list" ? "font-semibold text-point" : ""
             }`}
             href={"/mypage/order-list"}
           >
-            주문내역
+            주문 내역
           </Link>
           <Link
             className={`text-medium text-center p-2 m-2 ${
