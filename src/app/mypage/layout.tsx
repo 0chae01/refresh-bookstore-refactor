@@ -14,7 +14,9 @@ const MyPageLayout = ({ children }: { children: React.ReactNode }) => {
         <section className="menu flex flex-col w-[150px]">
           <Link
             className={`text-medium text-center p-2 m-2 ${
-              path === "order-list" ? "font-semibold text-point" : ""
+              path === "order-list" || path === "order-detail"
+                ? "font-semibold text-point"
+                : ""
             }`}
             href={"/mypage/order-list"}
           >

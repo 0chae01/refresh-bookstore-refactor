@@ -5,8 +5,8 @@ const OrderItem = () => {
     <div className="border-[1px] border-light_gray rounded-lg h-[150px] mb-4 flex justify-between items-center shadow-md">
       <div className="h-[-webkit-fill-available] p-4 my-2 flex flex-col justify-center items-center text-dark_gray border-light_gray border-r">
         <Link
-          href={"/order-detail/RJ558046"}
-          className="underline hover:underline hover:decoration-point hover:text-point"
+          href={"/mypage/order-detail?orderId=RJ558046"}
+          className="underline hover:underline hover:decoration-[#16a263] hover:text-[#16a263]"
         >
           RJ558046
         </Link>
@@ -27,8 +27,8 @@ const OrderItem = () => {
         <p className="text-small">총 1 권</p>
         <p className="text-medium">45,000원</p>
         <Link
-          href={"/order-detail/RJ558046"}
-          className="px-1 rounded text-dark_gray hover:text-point text-small hover:border-point border"
+          href={"/mypage/order-detail?orderId=RJ558046"}
+          className="px-2 py-1 rounded text-[#16a263] text-small border hover:bg-[#16a263] hover:bg-opacity-10"
         >
           주문 상세
         </Link>
