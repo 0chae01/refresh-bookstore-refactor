@@ -1,6 +1,11 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const MyPageLayout = ({ children }: { children: React.ReactNode }) => {
+  const path = usePathname().split("/").slice(-1)[0];
+  console.log(path);
   return (
     <div className="m-8">
       <h1 className="text-large my-1">마이페이지</h1>
@@ -8,12 +13,19 @@ const MyPageLayout = ({ children }: { children: React.ReactNode }) => {
       <div className="flex">
         <section className="menu flex flex-col">
           <Link
-            className="text-medium text-center p-2 m-2"
+            className={`text-medium text-center p-2 m-2 ${
+              path === "order-list" ? "font-semibold text-point" : ""
+            }`}
             href={"/mypage/order-list"}
           >
             주문내역
           </Link>
-          <Link className="text-medium text-center p-2 m-2" href={"/mypage"}>
+          <Link
+            className={`text-medium text-center p-2 m-2 ${
+              path === "mypage" ? "font-semibold text-point" : ""
+            }`}
+            href={"/mypage"}
+          >
             회원정보수정
           </Link>
         </section>
