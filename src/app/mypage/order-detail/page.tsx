@@ -1,6 +1,6 @@
 "use client";
 
-import { useSearchParams, usePathname } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 const OrderDetail = () => {
   const searchParams = useSearchParams();
@@ -12,7 +12,18 @@ const OrderDetail = () => {
       <h1 className="text-medium font-[600] border-dark_gray border-b-2">
         주문/배송 상세
       </h1>
-      <p>{orderId}</p>
+      <div className="flex">
+        <h2 className="p-2">주문날짜</h2>
+        <p>2023.07.20</p>
+      </div>
+      <div className="flex">
+        <h2>주문번호</h2>
+        <p>{orderId}</p>
+      </div>
+      <div className="flex">
+        <h2>배송상태</h2>
+        <p>배송중</p>
+      </div>
     </section>
   );
 };

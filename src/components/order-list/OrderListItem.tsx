@@ -1,9 +1,9 @@
 import Link from "next/link";
 
-const OrderItem = () => {
+const OrderListItem = () => {
   return (
     <div className="border-[1px] border-light_gray rounded-lg h-[150px] mb-4 flex justify-between items-center shadow-md">
-      <div className="h-[-webkit-fill-available] p-4 my-2 flex flex-col justify-center items-center text-dark_gray border-light_gray border-r">
+      <div className="h-[-webkit-fill-available] p-4 my-2 mr-2 flex flex-col justify-center items-center text-dark_gray border-light_gray border-r">
         <Link
           href={"/mypage/order-detail?orderId=RJ558046"}
           className="underline hover:underline hover:decoration-[#16a263] hover:text-[#16a263]"
@@ -37,4 +37,4 @@ const OrderItem = () => {
   );
 };
 
-export default OrderItem;
+export default OrderListItem;
