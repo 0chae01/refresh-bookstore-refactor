@@ -11,7 +11,7 @@ const MyPageLayout = ({ children }: { children: React.ReactNode }) => {
       <h1 className="text-large my-1">마이페이지</h1>
       <hr className="text-light_gray" />
       <div className="flex">
-        <section className="menu flex flex-col w-[150px]">
+        <section className="menu flex flex-col min-w-[150px]">
           <Link
             className={`text-medium text-center p-2 m-2 ${
               path === "order-list" || path === "order-detail"
