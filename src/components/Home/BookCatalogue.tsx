@@ -1,11 +1,7 @@
-import React, { useState } from "react";
+import { bookDataType } from "../../types/bookDataType";
 
-// interface BookCatalogue {
-//   book: bookDataType;
-// }
-
-const BookCatalogue = ({ book }) => {
-  const truncateText = (text, maxLength) => {
+const BookCatalogue = ({ book }: { book: bookDataType }) => {
+  const truncateText = (text: string, maxLength: number) => {
     if (text.length > maxLength) {
       return text.substring(0, maxLength) + "...";
     }

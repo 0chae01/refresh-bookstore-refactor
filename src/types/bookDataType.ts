@@ -1,5 +1,4 @@
 export type bookDataType = {
-  id: string;
   title: string;
   author: string;
   publisher: string;
