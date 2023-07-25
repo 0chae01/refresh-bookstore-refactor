@@ -6,8 +6,8 @@ export default function Home() {
   return (
     <div>
       <div className="w-full h-auto flex flex-row flex-wrap justify-around items-start ">
-        {books.map((book) => {
-          return <BookCatalogue book={book} />;
+        {books.map((book, id) => {
+          return <BookCatalogue key={id} book={book} />;
         })}
       </div>
     </div>

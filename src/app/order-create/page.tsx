@@ -8,7 +8,7 @@ import Post from "../../components/Common/Post";
 import { postCodePopupStore } from "../../stores";
 import autoHyphen from "../../utils/autoHyphen";
 
-const orderCreate = () => {
+const OrderCreate = () => {
   const [mounted, setMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [address, setAddress] = useState({
@@ -226,4 +226,4 @@ const orderCreate = () => {
   );
 };
 
-export default orderCreate;
+export default OrderCreate;
