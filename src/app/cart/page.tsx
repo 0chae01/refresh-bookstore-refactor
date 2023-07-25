@@ -1,7 +1,7 @@
 "use client";
 
 import { cartStateType } from "../../types/cartStateType";
-import CartItem from "../../components/cart/CartItem";
+import CartItem from "../../components/Cart/CartItem";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { cartStore } from "../../stores";
 import { createRef, SyntheticEvent, useEffect, useRef, useState } from "react";
