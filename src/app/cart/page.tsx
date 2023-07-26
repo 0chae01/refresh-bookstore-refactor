@@ -2,7 +2,7 @@
 
 import { cartStateType } from "../../types/cartStateType";
 import CartItem from "../../components/Cart/CartItem";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { cartStore } from "../../stores";
 import { createRef, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { checkedCartState } from "../../stores/cart";
@@ -102,16 +102,15 @@ const Cart = () => {
 
   useEffect(() => {
     setIsClient(true);
-    checkedCartData.forEach((item) => {
-      const itemRef = checkboxRefs.find(
-        (ref) => ref.current!.dataset.id === item.id
-      );
-      if (itemRef) itemRef.current!.checked = true;
-    });
-    setAllCheckedFromItems();
+
+    const checkedPriceArr = cart.map((item) => item.amount * item.price);
+    const checkedPrice = checkedPriceArr.reduce((a, b) => a + b, 0);
+    setCheckedItemPrice(checkedPrice);
+
     localStorage.setItem("cart", JSON.stringify(cart));
   }, []);
 
+  // cart와 formData, 체크박스의 상태가 바뀌면 가격 변경 출력
   useEffect(() => {
     const checkedItems = checkboxRefs.reduce<cartStateType[]>((res, ref, i) => {
       if (ref.current?.checked) res.push(cart[i]);
@@ -123,7 +122,7 @@ const Cart = () => {
     );
     const checkedPrice = checkedPriceArr.reduce((a, b) => a + b, 0);
     setCheckedItemPrice(checkedPrice);
-  }, [cart, formData]);
+  }, [cart, formData, checkboxRefs]);
 
   if (!isClient) return null;
   return (
