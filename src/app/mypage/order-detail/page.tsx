@@ -32,6 +32,7 @@ const OrderDetail = () => {
       </div>
       {mockData.map((item) => (
         <OrderDetailItem
+          key={item.isbn}
           isbn={item.isbn}
           image_path={item.image_path}
           title={item.title}
