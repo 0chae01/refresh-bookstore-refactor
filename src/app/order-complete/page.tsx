@@ -1,4 +1,4 @@
-const orderComplete = () => {
+const OrderComplete = () => {
   return (
     <div className="flex flex-col justify-center items-center min-h-[70vh]">
       <h1 className="text-[25px] mb-8">주문이 완료되었습니다!</h1>
@@ -14,4 +14,4 @@ const orderComplete = () => {
   );
 };
 
-export default orderComplete;
+export default OrderComplete;

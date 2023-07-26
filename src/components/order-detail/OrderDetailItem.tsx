@@ -7,7 +7,7 @@ type cartItemProps = {
   amount: number;
 };
 
-const OrderCreateItem = ({
+const OrderDetailItem = ({
   isbn,
   image_path,
   title,
@@ -36,4 +36,4 @@ const OrderCreateItem = ({
   );
 };
 
-export default OrderCreateItem;
+export default OrderDetailItem;
