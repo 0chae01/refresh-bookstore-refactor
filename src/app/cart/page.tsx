@@ -9,7 +9,6 @@ import { checkedCartState } from "../../stores/cart";
 
 // 임시 장바구니 데이터 저장 (book-detail에서 cartState 저장 구현 예정)
 if (typeof window !== "undefined") {
-  console.log("저장");
   localStorage.setItem(
     "cart",
     JSON.stringify([
@@ -86,15 +85,6 @@ const Cart = () => {
     }
     const data = new FormData(formRef.current);
     setFormData(data);
-    const checkedItems = checkboxRefs.reduce<cartStateType[]>((res, ref, i) => {
-      if (ref.current?.checked) res.push(cart[i]);
-      return res;
-    }, []);
-    const checkedPriceArr = checkedItems.map(
-      (item) => item.amount * item.price
-    );
-    const checkedPrice = checkedPriceArr.reduce((a, b) => a + b, 0);
-    setCheckedItemPrice(checkedPrice);
   };
 
   const deleteCheckedItem = () => {
@@ -112,11 +102,27 @@ const Cart = () => {
 
   useEffect(() => {
     setIsClient(true);
-    // 장바구니 첫 접근 시 전체선택 상태로 전체 금액 계산
-    const priceArr = cart.map((item) => item.amount * item.price);
-    const priceSum = priceArr.reduce((a, b) => a + b, 0);
-    setCheckedItemPrice(priceSum);
+
+    const checkedPriceArr = cart.map((item) => item.amount * item.price);
+    const checkedPrice = checkedPriceArr.reduce((a, b) => a + b, 0);
+    setCheckedItemPrice(checkedPrice);
+
+    localStorage.setItem("cart", JSON.stringify(cart));
   }, []);
+
+  // cart와 formData, 체크박스의 상태가 바뀌면 가격 변경 출력
+  useEffect(() => {
+    const checkedItems = checkboxRefs.reduce<cartStateType[]>((res, ref, i) => {
+      if (ref.current?.checked) res.push(cart[i]);
+      return res;
+    }, []);
+
+    const checkedPriceArr = checkedItems.map(
+      (item) => item.amount * item.price
+    );
+    const checkedPrice = checkedPriceArr.reduce((a, b) => a + b, 0);
+    setCheckedItemPrice(checkedPrice);
+  }, [cart, formData, checkboxRefs]);
 
   if (!isClient) return null;
   return (
