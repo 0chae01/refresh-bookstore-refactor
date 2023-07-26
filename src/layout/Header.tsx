@@ -7,11 +7,11 @@ import Link from "next/link";
 const Header = () => {
   return (
     <div className="w-full ">
-      <div className=" w-full h-[150px] "></div>
-      <div className="inset-0 -top-5 bg-light_green w-[110%] h-[150px] flex flex-row justify-center items-center blur-md overflow-hidden fixed z-20">
+      <div className=" w-full h-[130px] "></div>
+      <div className="-left-10 -top-10 bg-light_green w-[120%] h-[160px] flex flex-row justify-center items-center blur-lg overflow-hidden fixed z-20">
         <RefreshAnimation />
       </div>
-      <div className=" inset-0 w-full h-[130px] flex flex-row justify-center items-center fixed z-20">
+      <div className=" inset-0 w-full h-[110px] flex flex-row justify-center items-center fixed z-20">
         <div className="w-full lg:w-[1024px] flex flex-row justify-between px-3">
           <Link href="/">
             <Logo color="#16a263" width="150px" />
