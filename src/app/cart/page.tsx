@@ -6,6 +6,8 @@ import { useRecoilState } from "recoil";
 import { cartStore } from "../../stores";
 import { createRef, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { checkedCartState } from "../../stores/cart";
+import ErrorIcon from "../../components/Common/Icons/ErrorIcon";
+import { API_BASE_URL } from "../../constants/path";
 
 // 임시 장바구니 데이터 저장 (book-detail에서 cartState 저장 구현 예정)
 if (typeof window !== "undefined") {
@@ -100,6 +102,20 @@ const Cart = () => {
     }
   };
 
+  const purchase = async () => {
+    try {
+      const data = await fetch(`${API_BASE_URL}/api/user/info`, {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      console.log(data);
+    } catch (err: any) {
+      console.log(err.message);
+    }
+  };
+
   useEffect(() => {
     setIsClient(true);
 
@@ -107,7 +123,7 @@ const Cart = () => {
     const checkedPrice = checkedPriceArr.reduce((a, b) => a + b, 0);
     setCheckedItemPrice(checkedPrice);
 
-    localStorage.setItem("cart", JSON.stringify(cart));
+    // localStorage.setItem("cart", JSON.stringify(cart));
   }, []);
 
   // cart와 formData, 체크박스의 상태가 바뀌면 가격 변경 출력
@@ -129,7 +145,7 @@ const Cart = () => {
     <div className="m-8">
       <h1 className="text-large my-1">장바구니</h1>
       <hr className="text-light_gray" />
-      {cart ? (
+      {cart.length ? (
         <>
           <form ref={formRef} onChange={handleCheckboxChanged}>
             <section className="my-3 flex justify-between">
@@ -195,7 +211,7 @@ const Cart = () => {
                 </p>
               </div>
               <button
-                onClick={() => console.log("purchase!")}
+                onClick={purchase}
                 disabled={checkedItemPrice ? false : true}
                 className="rounded text-white bg-point w-[100%] h-[45px] disabled:bg-gray"
               >
@@ -205,7 +221,12 @@ const Cart = () => {
           </section>
         </>
       ) : (
-        <p>상품이 없습니다.</p>
+        <div className="flex flex-col justify-center items-center my-20">
+          <ErrorIcon fill="#bfbfbf" width={100} />
+          <p className="text-gray text-medium font-bold m-2">
+            상품이 없습니다.
+          </p>
+        </div>
       )}
     </div>
   );
