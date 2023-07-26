@@ -2,13 +2,14 @@
 
 import { cartStateType } from "../../types/cartStateType";
 import CartItem from "../../components/Cart/CartItem";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { cartStore } from "../../stores";
 import { createRef, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { checkedCartState } from "../../stores/cart";
 
 // 임시 장바구니 데이터 저장 (book-detail에서 cartState 저장 구현 예정)
 if (typeof window !== "undefined") {
+  console.log("저장");
   localStorage.setItem(
     "cart",
     JSON.stringify([
@@ -85,6 +86,15 @@ const Cart = () => {
     }
     const data = new FormData(formRef.current);
     setFormData(data);
+    const checkedItems = checkboxRefs.reduce<cartStateType[]>((res, ref, i) => {
+      if (ref.current?.checked) res.push(cart[i]);
+      return res;
+    }, []);
+    const checkedPriceArr = checkedItems.map(
+      (item) => item.amount * item.price
+    );
+    const checkedPrice = checkedPriceArr.reduce((a, b) => a + b, 0);
+    setCheckedItemPrice(checkedPrice);
   };
 
   const deleteCheckedItem = () => {
@@ -102,28 +112,11 @@ const Cart = () => {
 
   useEffect(() => {
     setIsClient(true);
-    checkedCartData.forEach((item) => {
-      const itemRef = checkboxRefs.find(
-        (ref) => ref.current!.dataset.id === item.id
-      );
-      if (itemRef) itemRef.current!.checked = true;
-    });
-    setAllCheckedFromItems();
-    localStorage.setItem("cart", JSON.stringify(cart));
+    // 장바구니 첫 접근 시 전체선택 상태로 전체 금액 계산
+    const priceArr = cart.map((item) => item.amount * item.price);
+    const priceSum = priceArr.reduce((a, b) => a + b, 0);
+    setCheckedItemPrice(priceSum);
   }, []);
-
-  useEffect(() => {
-    const checkedItems = checkboxRefs.reduce<cartStateType[]>((res, ref, i) => {
-      if (ref.current?.checked) res.push(cart[i]);
-      return res;
-    }, []);
-
-    const checkedPriceArr = checkedItems.map(
-      (item) => item.amount * item.price
-    );
-    const checkedPrice = checkedPriceArr.reduce((a, b) => a + b, 0);
-    setCheckedItemPrice(checkedPrice);
-  }, [cart, formData]);
 
   if (!isClient) return null;
   return (
