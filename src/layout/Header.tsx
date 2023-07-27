@@ -14,7 +14,7 @@ const Header = () => {
     <div className="w-full ">
       {searchState ? (
         <>
-          <div className=" bg-point opacity-95 w-full h-full  flex flex-row justify-center items-center  overflow-hidden fixed z-20">
+          <div className=" bg-point bg-opacity-70 w-full h-full  flex flex-row justify-center items-center  overflow-hidden fixed z-20">
             <div className=" inset-0 w-full h-[110px] flex flex-row justify-center items-center fixed z-20">
               <div className="w-full lg:w-[1024px] flex flex-row justify-between items-center px-3 ">
                 <Link href="/">
@@ -29,15 +29,18 @@ const Header = () => {
                     <SearchIcon color="white" width="50px" />
                   </div>
                   <div
-                    className=" w-[50px] h-[50px] bg-white rounded-full"
+                    className=" w-[50px] h-[50px]  rounded-full"
                     onClick={() => setSearchState(false)}
-                  ></div>
+                  >
+                    {" "}
+                    X
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="w-full h-[100vh] flex flex-col justify-center items-center relative ">
+          <div className="w-full h-[100vh] flex flex-col justify-center items-center relative z-10 ">
             <Search />
           </div>
         </>
