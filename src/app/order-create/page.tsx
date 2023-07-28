@@ -3,7 +3,7 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
 import OrderCreateItem from "../../components/order-create/OrderCreateItem";
-import { cartState } from "../../stores/cart";
+import { checkedCartState } from "../../stores/cart";
 import Post from "../../components/Common/Post";
 import { postCodePopupStore } from "../../stores";
 import autoHyphen from "../../utils/autoHyphen";
@@ -25,9 +25,9 @@ const OrderCreate = () => {
     setIsLoading(false);
   }, []);
 
-  const cart = useRecoilValue(cartState);
+  const checkedCartData = useRecoilValue(checkedCartState);
 
-  const priceArr = cart.map((item) => item.amount * item.price);
+  const priceArr = checkedCartData.map((item) => item.amount * item.price);
   const priceSum = priceArr.reduce((a, b) => a + b, 0);
   const deliveryFee = priceSum > 50000 || priceSum === 0 ? 0 : 3000;
 
@@ -41,6 +41,7 @@ const OrderCreate = () => {
   };
 
   useEffect(() => {
+    console.log(checkedCartData);
     if (inputVisible) {
       inputRef.current!.focus();
     }
@@ -63,7 +64,7 @@ const OrderCreate = () => {
         <section className="flex-1 px-2">
           <h1 className="text-medium font-normal m-2">주문 상품 정보</h1>
           {!isLoading ? (
-            cart.map((item) => (
+            checkedCartData.map((item) => (
               <OrderCreateItem
                 key={item.isbn}
                 isbn={item.isbn}
