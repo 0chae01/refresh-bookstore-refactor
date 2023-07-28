@@ -7,7 +7,7 @@ import { cartStore } from "../../stores";
 import { createRef, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { checkedCartState } from "../../stores/cart";
 import ErrorIcon from "../../components/Common/Icons/ErrorIcon";
-import { API_BASE_URL } from "../../constants/path";
+import { useRouter } from "next/navigation";
 
 // 임시 장바구니 데이터 저장 (book-detail에서 cartState 저장 구현 예정)
 if (typeof window !== "undefined") {
@@ -47,6 +47,7 @@ if (typeof window !== "undefined") {
 }
 
 const Cart = () => {
+  const router = useRouter();
   const [isClient, setIsClient] = useState(false);
   const [cart, setCart] = useRecoilState(cartStore.cartState);
   const [checkedItemPrice, setCheckedItemPrice] = useState(0);
@@ -104,26 +105,33 @@ const Cart = () => {
 
   const purchase = async () => {
     try {
-      const data = await fetch(`${API_BASE_URL}/api/user/info`, {
+      const response = await fetch(`/api/user/info`, {
+        method: "GET",
         headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log(data);
+      console.log(response);
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        router.push("/order-create");
+      } else {
+        throw new Error("error");
+      }
     } catch (err: any) {
       console.log(err.message);
+      router.push("/login");
     }
   };
 
   useEffect(() => {
     setIsClient(true);
-
     const checkedPriceArr = cart.map((item) => item.amount * item.price);
     const checkedPrice = checkedPriceArr.reduce((a, b) => a + b, 0);
     setCheckedItemPrice(checkedPrice);
-
-    // localStorage.setItem("cart", JSON.stringify(cart));
+    localStorage.setItem("cart", JSON.stringify(cart));
   }, []);
 
   // cart와 formData, 체크박스의 상태가 바뀌면 가격 변경 출력
