@@ -1,99 +1,219 @@
 "use client";
 import CheckIcon from "@/components/Common/Icons/CheckIcon";
+import autoHyphen from "@/utils/autoHyphen";
 import React, { useEffect, useState } from "react";
 
 const RegisterPage = () => {
-  const [nameCheckStatus, setNameCheckStatus] = useState("default");
-  const [emailCheckStatus, setEmailCheckStatus] = useState("default");
-  const [passwordCheckStatus, setPasswordCheckStatus] = useState("default");
-  const [password, setPassword] = useState("");
-  const [passwordConfirmCheckStatus, setPasswordConfirmCheckStatus] =
-    useState("default");
+  const [inputCheck, setInputCheck] = useState({
+    name: {
+      value: "",
+      status: "default",
+      isConfirmed: false,
+    },
+    email: {
+      value: "",
+      status: "default",
+      isConfirmed: false,
+    },
+    password: {
+      value: "",
+      status: "default",
+      isConfirmed: false,
+    },
+    passwordConfirm: {
+      value: "",
+      status: "default",
+      isConfirmed: false,
+    },
+    phoneNumber: {
+      value: "",
+      status: "default",
+      isConfirmed: false,
+    },
+    address: {
+      value: "",
+      status: "default",
+      isConfirmed: false,
+    },
+  });
+
   const emailInput = document.getElementById("email-input");
   const nameInput = document.getElementById("name-input");
   const passwordInput = document.getElementById("password-input");
   const passwordConfirmInput = document.getElementById(
     "password-confirm-input"
   );
+  const phoneNumberInput = document.getElementById("phone-number-input");
 
   useEffect(() => {
-    if (passwordConfirmInput!.value === "") {
-      setPasswordConfirmCheckStatus("default");
-    } else if (passwordInput!.value === "") {
-      setPasswordConfirmCheckStatus("default");
-    } else if (
-      passwordInput
-        ? passwordInput.value === passwordConfirmInput!.value
-        : false
-    ) {
-      setPasswordConfirmCheckStatus("correct");
+    if (inputCheck.passwordConfirm.value === "") {
+      setInputCheck((prevState) => ({
+        ...prevState,
+        passwordConfirm: { ...prevState.passwordConfirm, status: "default" },
+      }));
+    } else if (inputCheck.password.value === "") {
+      setInputCheck((prevState) => ({
+        ...prevState,
+        passwordConfirm: { ...prevState.passwordConfirm, status: "default" },
+      }));
+    } else if (inputCheck.passwordConfirm.value === inputCheck.password.value) {
+      setInputCheck((prevState) => ({
+        ...prevState,
+        passwordConfirm: { ...prevState.passwordConfirm, status: "correct" },
+      }));
       passwordConfirmInput
         ? (passwordConfirmInput.style.borderBottomColor = "#1DC078")
         : "";
     } else {
-      setPasswordConfirmCheckStatus("wrong");
+      setInputCheck((prevState) => ({
+        ...prevState,
+        passwordConfirm: { ...prevState.passwordConfirm, status: "wrong" },
+      }));
       passwordConfirmInput
         ? (passwordConfirmInput.style.borderBottomColor = "red")
         : "";
     }
-  }, [password]);
+  }, [inputCheck.password]);
 
   const checkName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputCheck((prevState) => ({
+      ...prevState,
+      name: { ...prevState.name, value: e.target.value },
+    }));
     if (e.target.value === "") {
-      setNameCheckStatus("default");
+      setInputCheck((prevState) => ({
+        ...prevState,
+        name: { ...prevState.name, status: "default" },
+      }));
       nameInput ? (nameInput.style.borderBottomColor = "black") : "";
     } else {
-      setNameCheckStatus("correct");
+      setInputCheck((prevState) => ({
+        ...prevState,
+        name: { ...prevState.name, status: "correct" },
+      }));
       nameInput ? (nameInput.style.borderBottomColor = "#1DC078") : "";
     }
   };
 
   const checkEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     var emailPattern = /^\S+@\S+\.\S+$/;
+    setInputCheck((prevState) => ({
+      ...prevState,
+      email: { ...prevState.email, value: e.target.value },
+    }));
 
     if (e.target.value === "") {
-      setEmailCheckStatus("default");
+      setInputCheck((prevState) => ({
+        ...prevState,
+        email: { ...prevState.email, status: "default" },
+      }));
       emailInput ? (emailInput.style.borderBottomColor = "black") : "";
     } else if (emailPattern.test(e.target.value)) {
-      setEmailCheckStatus("correct");
+      setInputCheck((prevState) => ({
+        ...prevState,
+        email: { ...prevState.email, status: "correct" },
+      }));
       emailInput ? (emailInput.style.borderBottomColor = "#1DC078") : "";
     } else {
-      setEmailCheckStatus("wrong");
+      setInputCheck((prevState) => ({
+        ...prevState,
+        email: { ...prevState.email, status: "wrong" },
+      }));
       emailInput ? (emailInput.style.borderBottomColor = "red") : "";
     }
   };
 
   const checkPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     var passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,20}$/;
-    setPassword(e.target.value);
+    setInputCheck((prevState) => ({
+      ...prevState,
+      password: { ...prevState.password, value: e.target.value },
+    }));
 
     if (e.target.value === "") {
-      setPasswordCheckStatus("default");
+      setInputCheck((prevState) => ({
+        ...prevState,
+        password: { ...prevState.password, status: "default" },
+      }));
       passwordInput ? (passwordInput.style.borderBottomColor = "black") : "";
     } else if (passwordPattern.test(e.target.value)) {
-      setPasswordCheckStatus("correct");
+      setInputCheck((prevState) => ({
+        ...prevState,
+        password: { ...prevState.password, status: "correct" },
+      }));
       passwordInput ? (passwordInput.style.borderBottomColor = "#1DC078") : "";
     } else {
-      setPasswordCheckStatus("wrong");
+      setInputCheck((prevState) => ({
+        ...prevState,
+        password: { ...prevState.password, status: "wrong" },
+      }));
       passwordInput ? (passwordInput.style.borderBottomColor = "red") : "";
     }
   };
 
   const checkPasswordConfirm = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputCheck((prevState) => ({
+      ...prevState,
+      passwordConfirm: { ...prevState.passwordConfirm, value: e.target.value },
+    }));
     if (e.target.value === "") {
-      setPasswordConfirmCheckStatus("default");
+      setInputCheck((prevState) => ({
+        ...prevState,
+        passwordConfirm: { ...prevState.passwordConfirm, status: "default" },
+      }));
       passwordConfirmInput
         ? (passwordConfirmInput.style.borderBottomColor = "black")
         : "";
     } else if (passwordInput ? passwordInput.value === e.target.value : false) {
-      setPasswordConfirmCheckStatus("correct");
+      setInputCheck((prevState) => ({
+        ...prevState,
+        passwordConfirm: { ...prevState.passwordConfirm, status: "correct" },
+      }));
       passwordConfirmInput
         ? (passwordConfirmInput.style.borderBottomColor = "#1DC078")
         : "";
     } else {
-      setPasswordConfirmCheckStatus("wrong");
+      setInputCheck((prevState) => ({
+        ...prevState,
+        passwordConfirm: { ...prevState.passwordConfirm, status: "wrong" },
+      }));
       passwordConfirmInput
         ? (passwordConfirmInput.style.borderBottomColor = "red")
+        : "";
+    }
+  };
+
+  const checkPhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+    phoneNumberInput!.value = autoHyphen(e.target.value);
+    var phoneNumberPattern = /^\d{3}-\d{4}-\d{4}$/;
+    setInputCheck((prevState) => ({
+      ...prevState,
+      phoneNumber: { ...prevState.phoneNumber, value: e.target.value },
+    }));
+
+    if (e.target.value === "") {
+      setInputCheck((prevState) => ({
+        ...prevState,
+        phoneNumber: { ...prevState.phoneNumber, status: "default" },
+      }));
+      phoneNumberInput
+        ? (phoneNumberInput.style.borderBottomColor = "black")
+        : "";
+    } else if (phoneNumberPattern.test(e.target.value)) {
+      setInputCheck((prevState) => ({
+        ...prevState,
+        phoneNumber: { ...prevState.phoneNumber, status: "correct" },
+      }));
+      phoneNumberInput
+        ? (phoneNumberInput.style.borderBottomColor = "#1DC078")
+        : "";
+    } else {
+      setInputCheck((prevState) => ({
+        ...prevState,
+        phoneNumber: { ...prevState.phoneNumber, status: "wrong" },
+      }));
+      phoneNumberInput
+        ? (phoneNumberInput.style.borderBottomColor = "red")
         : "";
     }
   };
@@ -108,7 +228,7 @@ const RegisterPage = () => {
       </div>
       <form className="w-full flex flex-col justify-start items-center m-10">
         <div className="w-[60%] h-[70px] flex flex-row justify-around items-start mx-10 my-2">
-          {nameCheckStatus === "correct" ? (
+          {inputCheck.name.status === "correct" ? (
             <label className="w-[25%] h-[30px] flex flex-row justify-start items-center text-point font-bold text-xl">
               이름 <CheckIcon color="#1DC078" width="20px" />
             </label>
@@ -127,7 +247,7 @@ const RegisterPage = () => {
           </div>
         </div>
         <div className="w-[60%] h-[70px] flex flex-row justify-around items-start mx-10 my-2">
-          {emailCheckStatus === "correct" ? (
+          {inputCheck.email.status === "correct" ? (
             <label className="w-[25%] h-[30px] flex flex-row justify-start items-center text-point font-bold text-xl">
               이메일 <CheckIcon color="#1DC078" width="20px" />
             </label>
@@ -144,16 +264,16 @@ const RegisterPage = () => {
               onChange={(e) => checkEmail(e)}
             />
             <div className="text-xs text-red">
-              {emailCheckStatus === "wrong"
+              {inputCheck.email.status === "wrong"
                 ? "올바른 이메일을 입력해주세요."
-                : emailCheckStatus === "exist"
+                : inputCheck.email.status === "exist"
                 ? "이미 존재하는 이메일입니다."
                 : ""}
             </div>
           </div>
         </div>
         <div className="w-[60%] h-[70px] flex flex-row justify-around items-start mx-10 my-2">
-          {passwordCheckStatus === "correct" ? (
+          {inputCheck.password.status === "correct" ? (
             <label className="w-[25%] h-[30px] flex flex-row justify-start items-center text-point font-bold text-xl">
               비밀번호 <CheckIcon color="#1DC078" width="20px" />
             </label>
@@ -171,14 +291,14 @@ const RegisterPage = () => {
               onChange={(e) => checkPassword(e)}
             />
             <div className="text-xs text-red">
-              {passwordCheckStatus === "wrong"
+              {inputCheck.password.status === "wrong"
                 ? "비밀번호는 8~20자의 영문자와 숫자를 포함한 조합으로 만들어주세요."
                 : ""}
             </div>
           </div>
         </div>
         <div className="w-[60%] h-[70px] flex flex-row justify-around items-start mx-10 my-2">
-          {passwordConfirmCheckStatus === "correct" ? (
+          {inputCheck.passwordConfirm.status === "correct" ? (
             <label className="w-[25%] h-[30px] flex flex-row justify-start items-center text-point font-bold text-xl">
               비밀번호 확인 <CheckIcon color="#1DC078" width="20px" />
             </label>
@@ -196,28 +316,34 @@ const RegisterPage = () => {
               onChange={(e) => checkPasswordConfirm(e)}
             />
             <div className="text-xs text-red">
-              {passwordConfirmCheckStatus === "wrong"
+              {inputCheck.passwordConfirm.status === "wrong"
                 ? "비밀번호가 일치하지 않습니다."
                 : ""}
             </div>
           </div>
         </div>
         <div className="w-[60%] h-[70px] flex flex-row justify-around items-start mx-10 my-2">
-          <label className="w-[2%] h-full flex flex-row justify-start items-start font-semibold text-xl">
-            비밀번호
-          </label>
+          {inputCheck.phoneNumber.status === "correct" ? (
+            <label className="w-[25%] h-[30px] flex flex-row justify-start items-center text-point font-bold text-xl">
+              휴대폰 번호 <CheckIcon color="#1DC078" width="20px" />
+            </label>
+          ) : (
+            <label className="w-[25%] h-[30px] flex flex-row justify-start items-center font-semibold text-xl">
+              휴대폰 번호
+            </label>
+          )}
+
           <div className="w-[65%] flex flex-col justify-start">
-            <input className="w-full h-[30px] border-b border-point  outline-none px-1" />
-            <div>안됩니다</div>
-          </div>
-        </div>
-        <div className="w-[60%] h-[70px] flex flex-row justify-around items-start mx-10 my-2">
-          <label className="w-[20%] h-full flex flex-row justify-start items-start font-semibold text-xl">
-            비밀번호 확인
-          </label>
-          <div className="w-[65%] flex flex-col justify-start">
-            <input className="w-full h-[30px] border-b border-point  outline-none" />
-            <div>안됩니다</div>
+            <input
+              id="phone-number-input"
+              className={`w-full h-[30px] border-b border-black text-xl outline-none`}
+              onChange={(e) => checkPhoneNumber(e)}
+            />
+            <div className="text-xs text-red">
+              {inputCheck.phoneNumber.status === "wrong"
+                ? "올바른 번호를 입력해주세요."
+                : ""}
+            </div>
           </div>
         </div>
       </form>
