@@ -48,28 +48,14 @@ const RegisterPage = () => {
     zonecode: "",
   });
 
-  const emailInput = document!.getElementById(
-    "email-input"
-  ) as HTMLInputElement;
-  const nameInput = document!.getElementById("name-input") as HTMLInputElement;
-  const passwordInput = document!.getElementById(
-    "password-input"
-  ) as HTMLInputElement;
-  const passwordConfirmInput = document!.getElementById(
-    "password-confirm-input"
-  ) as HTMLInputElement;
-  const phoneNumberInput = document!.getElementById(
-    "phone-number-input"
-  ) as HTMLInputElement;
-  const addressZipcodeInput = document!.getElementById(
-    "address-zipcode-input"
-  ) as HTMLInputElement;
-  const addressAddressInput = document!.getElementById(
-    "address-address-input"
-  ) as HTMLInputElement;
-  const addressDetailInput = document!.getElementById(
-    "address-detail-input"
-  ) as HTMLInputElement;
+  const emailInput = React.useRef<HTMLInputElement>(null);
+  const nameInput = React.useRef<HTMLInputElement>(null);
+  const passwordInput = React.useRef<HTMLInputElement>(null);
+  const passwordConfirmInput = React.useRef<HTMLInputElement>(null);
+  const phoneNumberInput = React.useRef<HTMLInputElement>(null);
+  const addressZipcodeInput = React.useRef<HTMLInputElement>(null);
+  const addressAddressInput = React.useRef<HTMLInputElement>(null);
+  const addressDetailInput = React.useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (inputCheck.passwordConfirm.value === "") {
@@ -87,17 +73,17 @@ const RegisterPage = () => {
         ...prevState,
         passwordConfirm: { ...prevState.passwordConfirm, status: "correct" },
       }));
-      passwordConfirmInput
-        ? (passwordConfirmInput.style.borderBottomColor = "#1DC078")
-        : "";
+      if (passwordConfirmInput.current) {
+        passwordConfirmInput.current.style.borderBottomColor = "#1DC078";
+      }
     } else {
       setInputCheck((prevState) => ({
         ...prevState,
         passwordConfirm: { ...prevState.passwordConfirm, status: "wrong" },
       }));
-      passwordConfirmInput
-        ? (passwordConfirmInput.style.borderBottomColor = "red")
-        : "";
+      if (passwordConfirmInput.current) {
+        passwordConfirmInput.current.style.borderBottomColor = "red";
+      }
     }
   }, [inputCheck.password]);
 
@@ -111,13 +97,17 @@ const RegisterPage = () => {
         ...prevState,
         name: { ...prevState.name, status: "default" },
       }));
-      nameInput ? (nameInput.style.borderBottomColor = "black") : "";
+      if (nameInput.current) {
+        nameInput.current.style.borderBottomColor = "black";
+      }
     } else {
       setInputCheck((prevState) => ({
         ...prevState,
         name: { ...prevState.name, status: "correct" },
       }));
-      nameInput ? (nameInput.style.borderBottomColor = "#1DC078") : "";
+      if (nameInput.current) {
+        nameInput.current.style.borderBottomColor = "#1DC078";
+      }
     }
   };
 
@@ -133,19 +123,25 @@ const RegisterPage = () => {
         ...prevState,
         email: { ...prevState.email, status: "default" },
       }));
-      emailInput ? (emailInput.style.borderBottomColor = "black") : "";
+      if (emailInput.current) {
+        emailInput.current.style.borderBottomColor = "black";
+      }
     } else if (emailPattern.test(e.target.value)) {
       setInputCheck((prevState) => ({
         ...prevState,
         email: { ...prevState.email, status: "correct" },
       }));
-      emailInput ? (emailInput.style.borderBottomColor = "#1DC078") : "";
+      if (emailInput.current) {
+        emailInput.current.style.borderBottomColor = "#1DC078";
+      }
     } else {
       setInputCheck((prevState) => ({
         ...prevState,
         email: { ...prevState.email, status: "wrong" },
       }));
-      emailInput ? (emailInput.style.borderBottomColor = "red") : "";
+      if (emailInput.current) {
+        emailInput.current.style.borderBottomColor = "red";
+      }
     }
   };
 
@@ -161,19 +157,25 @@ const RegisterPage = () => {
         ...prevState,
         password: { ...prevState.password, status: "default" },
       }));
-      passwordInput ? (passwordInput.style.borderBottomColor = "black") : "";
+      if (passwordInput.current) {
+        passwordInput.current.style.borderBottomColor = "black";
+      }
     } else if (passwordPattern.test(e.target.value)) {
       setInputCheck((prevState) => ({
         ...prevState,
         password: { ...prevState.password, status: "correct" },
       }));
-      passwordInput ? (passwordInput.style.borderBottomColor = "#1DC078") : "";
+      if (passwordInput.current) {
+        passwordInput.current.style.borderBottomColor = "#1DC078";
+      }
     } else {
       setInputCheck((prevState) => ({
         ...prevState,
         password: { ...prevState.password, status: "wrong" },
       }));
-      passwordInput ? (passwordInput.style.borderBottomColor = "red") : "";
+      if (passwordInput.current) {
+        passwordInput.current.style.borderBottomColor = "red";
+      }
     }
   };
 
@@ -187,30 +189,36 @@ const RegisterPage = () => {
         ...prevState,
         passwordConfirm: { ...prevState.passwordConfirm, status: "default" },
       }));
-      passwordConfirmInput
-        ? (passwordConfirmInput.style.borderBottomColor = "black")
-        : "";
-    } else if (passwordInput ? passwordInput.value === e.target.value : false) {
+      if (passwordConfirmInput.current) {
+        passwordConfirmInput.current.style.borderBottomColor = "black";
+      }
+    } else if (
+      passwordInput.current
+        ? passwordInput.current.value === e.target.value
+        : false
+    ) {
       setInputCheck((prevState) => ({
         ...prevState,
         passwordConfirm: { ...prevState.passwordConfirm, status: "correct" },
       }));
-      passwordConfirmInput
-        ? (passwordConfirmInput.style.borderBottomColor = "#1DC078")
-        : "";
+      if (passwordConfirmInput.current) {
+        passwordConfirmInput.current.style.borderBottomColor = "#1DC078";
+      }
     } else {
       setInputCheck((prevState) => ({
         ...prevState,
         passwordConfirm: { ...prevState.passwordConfirm, status: "wrong" },
       }));
-      passwordConfirmInput
-        ? (passwordConfirmInput.style.borderBottomColor = "red")
-        : "";
+      if (passwordConfirmInput.current) {
+        passwordConfirmInput.current.style.borderBottomColor = "red";
+      }
     }
   };
 
   const checkPhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
-    phoneNumberInput!.value = autoHyphen(e.target.value);
+    phoneNumberInput.current
+      ? (phoneNumberInput.current.value = autoHyphen(e.target.value))
+      : "";
     var phoneNumberPattern = /^\d{3}-\d{4}-\d{4}$/;
     setInputCheck((prevState) => ({
       ...prevState,
@@ -222,50 +230,49 @@ const RegisterPage = () => {
         ...prevState,
         phoneNumber: { ...prevState.phoneNumber, status: "default" },
       }));
-      phoneNumberInput
-        ? (phoneNumberInput.style.borderBottomColor = "black")
-        : "";
+      if (phoneNumberInput.current) {
+        phoneNumberInput.current.style.borderBottomColor = "black";
+      }
     } else if (phoneNumberPattern.test(e.target.value)) {
       setInputCheck((prevState) => ({
         ...prevState,
         phoneNumber: { ...prevState.phoneNumber, status: "correct" },
       }));
-      phoneNumberInput
-        ? (phoneNumberInput.style.borderBottomColor = "#1DC078")
-        : "";
+      if (phoneNumberInput.current) {
+        phoneNumberInput.current.style.borderBottomColor = "#1DC078";
+      }
     } else {
       setInputCheck((prevState) => ({
         ...prevState,
         phoneNumber: { ...prevState.phoneNumber, status: "wrong" },
       }));
-      phoneNumberInput
-        ? (phoneNumberInput.style.borderBottomColor = "red")
-        : "";
+      if (phoneNumberInput.current) {
+        phoneNumberInput.current.style.borderBottomColor = "red";
+      }
     }
   };
 
   const checkAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (addressZipcodeInput.value) {
-      addressZipcodeInput.style.borderBottomColor = "#1DC078";
-    } else {
-      addressZipcodeInput.style.borderBottomColor = "black";
+    if (addressZipcodeInput.current) {
+      addressZipcodeInput.current.value
+        ? (addressZipcodeInput.current.style.borderBottomColor = "#1DC078")
+        : (addressZipcodeInput.current.style.borderBottomColor = "black");
+    }
+    if (addressAddressInput.current) {
+      addressAddressInput.current.value
+        ? (addressAddressInput.current.style.borderBottomColor = "#1DC078")
+        : (addressAddressInput.current.style.borderBottomColor = "black");
+    }
+    if (addressDetailInput.current) {
+      addressDetailInput.current.value
+        ? (addressDetailInput.current.style.borderBottomColor = "#1DC078")
+        : (addressDetailInput.current.style.borderBottomColor = "black");
     }
 
-    if (addressAddressInput.value) {
-      addressAddressInput.style.borderBottomColor = "#1DC078";
-    } else {
-      addressAddressInput.style.borderBottomColor = "black";
-    }
-
-    if (addressDetailInput.value) {
-      addressDetailInput.style.borderBottomColor = "#1DC078";
-    } else {
-      addressDetailInput.style.borderBottomColor = "black";
-    }
     if (
-      addressZipcodeInput.value &&
-      addressAddressInput.value &&
-      addressDetailInput.value
+      addressZipcodeInput.current?.value &&
+      addressAddressInput.current?.value &&
+      addressDetailInput.current?.value
     ) {
       setInputCheck((prevState) => ({
         ...prevState,
@@ -306,7 +313,7 @@ const RegisterPage = () => {
           <div className="w-[65%] flex flex-col justify-start">
             <input
               className="w-full h-[30px] border-b border-black text-xl outline-none"
-              id="name-input"
+              ref={nameInput}
               onChange={(e) => checkName(e)}
               placeholder="이름을 입력해주세요."
             />
@@ -325,7 +332,7 @@ const RegisterPage = () => {
 
           <div className="w-[65%] flex flex-col justify-start">
             <input
-              id="email-input"
+              ref={emailInput}
               className={`w-full h-[30px] border-b border-black text-xl outline-none`}
               onChange={(e) => checkEmail(e)}
               placeholder="이메일을 입력해주세요."
@@ -356,7 +363,7 @@ const RegisterPage = () => {
           <div className="w-[65%] flex flex-col justify-start">
             <input
               type="password"
-              id="password-input"
+              ref={passwordInput}
               className={`w-full h-[30px] border-b border-black text-xl outline-none`}
               onChange={(e) => checkPassword(e)}
               placeholder="비밀번호를 입력해주세요."
@@ -388,7 +395,7 @@ const RegisterPage = () => {
           <div className="w-[65%] flex flex-col justify-start">
             <input
               type="password"
-              id="password-confirm-input"
+              ref={passwordConfirmInput}
               className={`w-full h-[30px] border-b border-black text-xl outline-none`}
               onChange={(e) => checkPasswordConfirm(e)}
               placeholder="비밀번호를 확인해주세요."
@@ -418,7 +425,7 @@ const RegisterPage = () => {
 
           <div className="w-[65%] flex flex-col justify-start">
             <input
-              id="phone-number-input"
+              ref={phoneNumberInput}
               className={`w-full h-[30px] border-b border-black text-xl outline-none`}
               onChange={(e) => checkPhoneNumber(e)}
               placeholder="휴대폰 번호를 입력해주세요."
@@ -449,7 +456,7 @@ const RegisterPage = () => {
           <div className="w-[65%] flex flex-col justify-start">
             <div className="w-full flex flex-row justify-between">
               <input
-                id="address-zipcode-input"
+                ref={addressZipcodeInput}
                 className={`w-[45%] h-[30px] border-b my-3 border-black text-xl outline-none`}
                 onChange={(e) => checkAddress(e)}
                 onClick={handlePostClick}
@@ -465,7 +472,7 @@ const RegisterPage = () => {
             </div>
 
             <input
-              id="address-address-input"
+              ref={addressAddressInput}
               className={`w-full h-[30px] border-b my-3 border-black text-xl outline-none`}
               onChange={(e) => checkAddress(e)}
               value={address.address}
@@ -473,7 +480,7 @@ const RegisterPage = () => {
               placeholder="주소를 입력해주세요."
             />
             <input
-              id="address-detail-input"
+              ref={addressDetailInput}
               className={`w-full h-[30px] border-b my-3 border-black text-xl outline-none`}
               onChange={(e) => checkAddress(e)}
               placeholder="상세주소를 입력해주세요."
