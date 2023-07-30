@@ -48,24 +48,26 @@ const RegisterPage = () => {
     zonecode: "",
   });
 
-  const emailInput = document.getElementById("email-input") as HTMLInputElement;
-  const nameInput = document.getElementById("name-input") as HTMLInputElement;
-  const passwordInput = document.getElementById(
+  const emailInput = document!.getElementById(
+    "email-input"
+  ) as HTMLInputElement;
+  const nameInput = document!.getElementById("name-input") as HTMLInputElement;
+  const passwordInput = document!.getElementById(
     "password-input"
   ) as HTMLInputElement;
-  const passwordConfirmInput = document.getElementById(
+  const passwordConfirmInput = document!.getElementById(
     "password-confirm-input"
   ) as HTMLInputElement;
-  const phoneNumberInput = document.getElementById(
+  const phoneNumberInput = document!.getElementById(
     "phone-number-input"
   ) as HTMLInputElement;
-  const addressZipcodeInput = document.getElementById(
+  const addressZipcodeInput = document!.getElementById(
     "address-zipcode-input"
   ) as HTMLInputElement;
-  const addressAddressInput = document.getElementById(
+  const addressAddressInput = document!.getElementById(
     "address-address-input"
   ) as HTMLInputElement;
-  const addressDetailInput = document.getElementById(
+  const addressDetailInput = document!.getElementById(
     "address-detail-input"
   ) as HTMLInputElement;
 
@@ -492,10 +494,7 @@ const RegisterPage = () => {
               가입하기
             </button>
           ) : (
-            <div
-              className="w-full h-[50px] rounded-lg  my-2 bg-gray text-white text-lg font-extrabold flex flex-col justify-center items-center"
-              type="submit"
-            >
+            <div className="w-full h-[50px] rounded-lg  my-2 bg-gray text-white text-lg font-extrabold flex flex-col justify-center items-center">
               가입하기
             </div>
           )}
