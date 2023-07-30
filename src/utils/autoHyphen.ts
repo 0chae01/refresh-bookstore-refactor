@@ -1,5 +1,5 @@
 const autoHyphen = (value: string) => {
-  let formattedValue = value.replace(/-/g, ""); // 기존에 입력된 하이픈 제거
+  let formattedValue = value.replace(/\D/g, "").slice(0, 11);
 
   if (formattedValue.length > 3 && formattedValue.length <= 7) {
     formattedValue = formattedValue.replace(/(\d{3})(\d{1,4})/, "$1-$2"); // 첫 번째 하이픈 추가
