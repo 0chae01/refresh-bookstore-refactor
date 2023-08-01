@@ -4,7 +4,7 @@ import CheckIcon from "@/components/Common/Icons/CheckIcon";
 import Post from "@/components/Common/Post";
 import { postCodePopupStore } from "@/stores";
 import autoHyphen from "@/utils/autoHyphen";
-import React, { useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
 const RegisterPage = () => {
@@ -56,6 +56,8 @@ const RegisterPage = () => {
   const addressZipcodeInput = React.useRef<HTMLInputElement>(null);
   const addressAddressInput = React.useRef<HTMLInputElement>(null);
   const addressDetailInput = React.useRef<HTMLInputElement>(null);
+
+
 
   useEffect(() => {
     if (inputCheck.passwordConfirm.value === "") {
@@ -290,6 +292,29 @@ const RegisterPage = () => {
     setPopup(!popup);
   };
 
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch('/api/user/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error('Signup request failed');
+      }
+
+      const result = await response.json();
+      console.log(result);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div className="w-full h-auto flex flex-col justify-start items-center">
       <div className="w-[80%] h-[80px] mt-10 font-black text-3xl text-dark_green flex flex-col justify-center items-end ">
@@ -298,7 +323,7 @@ const RegisterPage = () => {
       <div className="w-[80%] h-[20px] mb-20 font-light text-2xl text-point flex flex-col justify-center items-end mt-5">
         리프레쉬북과 함께 일상을 Refresh하세요!
       </div>
-      <form className="w-full flex flex-col justify-start items-center m-10">
+      <form onSubmit={handleSubmit} className="w-full flex flex-col justify-start items-center m-10">
         <div className="w-[60%] h-[70px] flex flex-row justify-around items-start mx-10 my-2">
           {inputCheck.name.status === "correct" ? (
             <label className="w-[25%] h-[30px] flex flex-row justify-start items-center text-point font-bold text-xl">
