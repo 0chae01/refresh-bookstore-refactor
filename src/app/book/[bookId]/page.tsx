@@ -11,6 +11,7 @@ import MinusIcon from "@/components/Common/Icons/MinusIcon";
 import { useRouter } from "next/navigation";
 import { useRecoilState } from "recoil";
 import { cartStore } from "@/stores";
+import { bookDataType } from "@/types/bookDataType";
 
 interface BookDetailProps {
   params: {
@@ -38,6 +39,27 @@ const BookDetail: React.FC<BookDetailProps> = ({ params }) => {
         "cart",
         JSON.stringify([{ ...thisBook, amount: bookAmount }])
       );
+      setCart((prevCart) => {
+        const existingItemIndex = prevCart.findIndex(
+          (item) => item.id === thisBook!.isbn
+        );
+        if (existingItemIndex > -1) {
+          // 기존 아이템의 수량 업데이트
+          const updatedCart = [...prevCart];
+          updatedCart[existingItemIndex].amount += bookAmount;
+          return updatedCart;
+        } else {
+          // 새로운 아이템 추가
+          return [
+            ...prevCart,
+            {
+              ...(thisBook as bookDataType),
+              id: thisBook!.isbn,
+              amount: bookAmount,
+            },
+          ];
+        }
+      });
       let userConfirmation = window.confirm(
         "장바구니에 담겼습니다. 장바구니로 이동하시겠습니까?"
       );
@@ -65,23 +87,6 @@ const BookDetail: React.FC<BookDetailProps> = ({ params }) => {
       console.log(response);
       if (response.ok) {
         const data = await response.json();
-        setCart((prevCart) => {
-          const existingItemIndex = prevCart.findIndex(
-            (item) => item.id === thisBook!.isbn
-          );
-          if (existingItemIndex > -1) {
-            // 기존 아이템의 수량 업데이트
-            const updatedCart = [...prevCart];
-            updatedCart[existingItemIndex].amount += bookAmount;
-            return updatedCart;
-          } else {
-            // 새로운 아이템 추가
-            return [
-              ...prevCart,
-              { ...thisBook, id: thisBook!.isbn, amount: bookAmount },
-            ];
-          }
-        });
 
         console.log(data);
         router.push("/order-create");

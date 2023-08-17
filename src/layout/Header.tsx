@@ -26,18 +26,18 @@ const Header = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const headerStyle = {
+  const headerStyle: React.CSSProperties = {
     height: currentURI === "/" ? "400px" : "120px",
     // 다른 스타일 속성들...
   };
 
-  const headerBodyStyle = {
+  const headerBodyStyle: React.CSSProperties = {
     height: currentURI === "/" ? "400px" : "130px",
     position: currentURI === "/" ? "absolute" : "fixed",
     // 다른 스타일 속성들...
   };
 
-  const headerIconsStyle = {
+  const headerIconsStyle: React.CSSProperties = {
     height: currentURI === "/" ? "400px" : "130px",
     position: currentURI === "/" ? "absolute" : "fixed",
     display: "flex",
@@ -47,7 +47,7 @@ const Header = () => {
     // 다른 스타일 속성들...
   };
 
-  const headerLogoStyle = {
+  const headerLogoStyle: React.CSSProperties = {
     position: "relative",
     transform: `
     translateY(${currentURI === "/" ? "120px" : "0"})
