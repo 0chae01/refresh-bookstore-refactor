@@ -11,7 +11,6 @@ import { useEffect, useState } from "react";
 
 const Header = () => {
   const currentURI = usePathname();
-  console.log(currentURI);
   const [searchState, setSearchState] = useState(false);
   const [slogan, setSlogan] = useState("일상");
   let num = 1;
@@ -44,7 +43,7 @@ const Header = () => {
     display: "flex",
     flexDirection: "column",
     justifyContent: "flex-start",
-    alignItem: "center",
+    alignItems: "center",
     // 다른 스타일 속성들...
   };
 

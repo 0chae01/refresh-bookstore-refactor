@@ -57,8 +57,6 @@ const RegisterPage = () => {
   const addressAddressInput = React.useRef<HTMLInputElement>(null);
   const addressDetailInput = React.useRef<HTMLInputElement>(null);
 
-
-
   useEffect(() => {
     if (inputCheck.passwordConfirm.value === "") {
       setInputCheck((prevState) => ({
@@ -294,18 +292,37 @@ const RegisterPage = () => {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    const data = {
+      name: nameInput.current ? nameInput.current.value : "no name",
+      email: emailInput.current ? emailInput.current.value : "no email",
+      password: passwordInput.current
+        ? passwordInput.current.value
+        : "no password",
+      postalCode: addressZipcodeInput.current
+        ? addressZipcodeInput.current.value
+        : "no postal code",
+      address: addressAddressInput.current
+        ? addressAddressInput.current.value
+        : "no address",
+      detailAddress: addressDetailInput.current
+        ? addressDetailInput.current.value
+        : "no address",
+      phone: phoneNumberInput.current
+        ? phoneNumberInput.current.value
+        : "no phone number",
+    };
 
     try {
-      const response = await fetch('/api/user/signup', {
-        method: 'POST',
+      const response = await fetch("/api/user/signup", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
 
       if (!response.ok) {
-        throw new Error('Signup request failed');
+        throw new Error("Signup request failed");
       }
 
       const result = await response.json();
@@ -323,7 +340,10 @@ const RegisterPage = () => {
       <div className="w-[80%] h-[20px] mb-20 font-light text-2xl text-point flex flex-col justify-center items-end mt-5">
         리프레쉬북과 함께 일상을 Refresh하세요!
       </div>
-      <form onSubmit={handleSubmit} className="w-full flex flex-col justify-start items-center m-10">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full flex flex-col justify-start items-center m-10"
+      >
         <div className="w-[60%] h-[70px] flex flex-row justify-around items-start mx-10 my-2">
           {inputCheck.name.status === "correct" ? (
             <label className="w-[25%] h-[30px] flex flex-row justify-start items-center text-point font-bold text-xl">
